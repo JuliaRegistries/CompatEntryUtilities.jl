@@ -1,0 +1,13 @@
+name = "CompatEntryUtilities"
+uuid = "8be7a408-1a4a-465c-8be3-3898d13eb8a5"
+authors = ["Dilum Aluthge", "contributors"]
+version = "1.0.0-DEV"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+julia = "1.6"
+
+[targets]
+test = ["Test"]
