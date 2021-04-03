@@ -3,12 +3,18 @@ using Test
 
 import Pkg
 
+@static if Base.VERSION >= v"1.7-"
+    const PKG_VERSIONS = Pkg.Versions
+else
+    const PKG_VERSIONS = Pkg.Types
+end
+
 function roundtrip_semver_spec_string(str_1::AbstractString)
-    spec_1 = Pkg.Versions.semver_spec(str_1)
+    spec_1 = PKG_VERSIONS.semver_spec(str_1)
     str_2 = semver_spec_string(spec_1)
-    spec_2 = Pkg.Versions.semver_spec(str_2)
+    spec_2 = PKG_VERSIONS.semver_spec(str_2)
     str_3 = semver_spec_string(spec_2)
-    spec_3 = Pkg.Versions.semver_spec(str_3)
+    spec_3 = PKG_VERSIONS.semver_spec(str_3)
     result = (spec_1 == spec_2) && (spec_1 == spec_3) && (spec_2 == spec_3)
     if !result
         @error("Roundtrip failed", str_1, str_2, str_3, spec_1, spec_2, spec_3)
@@ -20,10 +26,10 @@ end
     @testset "semver_spec_string" begin
         @testset begin
             let
-                lower = Pkg.Versions.VersionBound()
-                upper = Pkg.Versions.VersionBound(1)
-                r = Pkg.Versions.VersionRange(lower, upper)
-                spec = Pkg.Versions.VersionSpec([r])
+                lower = PKG_VERSIONS.VersionBound()
+                upper = PKG_VERSIONS.VersionBound(1)
+                r = PKG_VERSIONS.VersionRange(lower, upper)
+                spec = PKG_VERSIONS.VersionSpec([r])
                 msg = "This version range cannot be represented using SemVer notation"
                 @test_throws ArgumentError(msg) semver_spec_string(spec)
             end
