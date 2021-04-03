@@ -4,11 +4,12 @@ import Pkg
 
 export semver_spec_string
 
-function semver_spec_string(spec::Pkg.Versions.VersionSpec)
-    ranges = spec.ranges
-    isempty(ranges) && return "1 - 0"
-    specs = semver_spec_string.(ranges)
-    return join(specs, ", ")
+@static if Base.VERSION >= v"1.7-"
+    const VersionRange = Pkg.Versions.VersionRange
+    const VersionSpec = Pkg.Versions.VersionSpec
+else
+    const VersionRange = Pkg.Types.VersionRange
+    const VersionSpec = Pkg.Types.VersionSpec
 end
 
 function semver_spec_string(r::Pkg.Versions.VersionRange)
@@ -22,6 +23,13 @@ function semver_spec_string(r::Pkg.Versions.VersionRange)
     else
         return string(join(r.lower.t[1:m], "."), " - ", join(r.upper.t[1:n], "."))
     end
+end
+
+function semver_spec_string(spec::Pkg.Versions.VersionSpec)
+    ranges = spec.ranges
+    isempty(ranges) && return "1 - 0"
+    specs = semver_spec_string.(ranges)
+    return join(specs, ", ")
 end
 
 end # module
