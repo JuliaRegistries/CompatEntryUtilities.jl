@@ -12,7 +12,7 @@ else
     const VersionSpec = Pkg.Types.VersionSpec
 end
 
-function semver_spec_string(r::Pkg.Versions.VersionRange)
+function semver_spec_string(r::VersionRange)
     m, n = r.lower.n, r.upper.n
     if (m, n) == (0, 0)
         return "≥0"
@@ -25,7 +25,12 @@ function semver_spec_string(r::Pkg.Versions.VersionRange)
     end
 end
 
-function semver_spec_string(spec::Pkg.Versions.VersionSpec)
+"""
+    semver_spec_string(spec::Pkg.Versions.VersionSpec)
+
+Returns `str::AbstractString` such that `Pkg.Versions.semver_spec(str) == spec`.
+"""
+function semver_spec_string(spec::VersionSpec)
     ranges = spec.ranges
     isempty(ranges) && return "1 - 0"
     specs = semver_spec_string.(ranges)
