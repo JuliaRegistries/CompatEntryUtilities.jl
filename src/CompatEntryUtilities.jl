@@ -26,7 +26,9 @@ function _semver_spec_string(r::PKG_VERSIONS.VersionRange)
     if (m, n) == (0, 0)
         return "≥0"::String
     elseif m == 0
-        throw(ArgumentError("This version range cannot be represented using SemVer notation"))
+        msg = "This version range cannot be represented using SemVer notation"
+        @error(msg, r)
+        throw(ArgumentError(msg))
     elseif n == 0
         return string("≥", join(r.lower.t, "."),)::String
     else
