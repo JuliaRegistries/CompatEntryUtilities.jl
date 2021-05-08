@@ -5,14 +5,23 @@ import Pkg
 export semver_spec_string
 
 @static if Base.VERSION >= v"1.7-"
-    const VersionRange = Pkg.Versions.VersionRange
-    const VersionSpec = Pkg.Versions.VersionSpec
+    const PKG_VERSIONS = Pkg.Versions
 else
-    const VersionRange = Pkg.Types.VersionRange
-    const VersionSpec = Pkg.Types.VersionSpec
+    const PKG_VERSIONS = Pkg.Types
 end
 
-function semver_spec_string(r::VersionRange)
+function _check_result(spec::PKG_VERSIONS.VersionSpec, str::String)
+    spec_from_str = PKG_VERSIONS.semver_spec(str)
+    result_is_correct = spec == spec_from_str
+    if !result_is_correct
+        msg = "`Pkg.Versions.semver_spec(str)` is not equal to the original `spec`"
+        @error(msg, spec, str, spec_from_str)
+        throw(ErrorException(msg))
+    end
+    return nothing
+end
+
+function _semver_spec_string(r::PKG_VERSIONS.VersionRange)
     m, n = r.lower.n, r.upper.n
     if (m, n) == (0, 0)
         return "≥0"
@@ -30,11 +39,13 @@ end
 
 Returns `str::AbstractString` such that `Pkg.Versions.semver_spec(str) == spec`.
 """
-function semver_spec_string(spec::VersionSpec)
+function semver_spec_string(spec::PKG_VERSIONS.VersionSpec)
     ranges = spec.ranges
     isempty(ranges) && return "1 - 0"
-    specs = semver_spec_string.(ranges)
-    return join(specs, ", ")
+    specs = _semver_spec_string.(ranges)
+    result_string = join(specs, ", ")
+    _check_result(spec, result_string)
+    return result_string
 end
 
 end # module
