@@ -24,13 +24,13 @@ end
 function _semver_spec_string(r::PKG_VERSIONS.VersionRange)
     m, n = r.lower.n, r.upper.n
     if (m, n) == (0, 0)
-        return "≥0"
+        return "≥0"::String
     elseif m == 0
         throw(ArgumentError("This version range cannot be represented using SemVer notation"))
     elseif n == 0
-        return string("≥", join(r.lower.t, "."),)
+        return string("≥", join(r.lower.t, "."),)::String
     else
-        return string(join(r.lower.t[1:m], "."), " - ", join(r.upper.t[1:n], "."))
+        return string(join(r.lower.t[1:m], "."), " - ", join(r.upper.t[1:n], "."))::String
     end
 end
 
