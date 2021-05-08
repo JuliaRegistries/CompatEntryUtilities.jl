@@ -43,8 +43,8 @@ function semver_spec_string(spec::PKG_VERSIONS.VersionSpec)
     if isempty(spec.ranges)
         result_string = "1 - 0"::String
     else
-        specs = _semver_spec_string.(spec.ranges)
-        result_string = join(specs, ", ")::String
+        spec_strings = _semver_spec_string.(spec.ranges)::Vector{String}
+        result_string = join(spec_strings, ", ")::String
     end
     _check_result(spec, result_string)
     return result_string
