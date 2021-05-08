@@ -42,10 +42,10 @@ Returns `str::AbstractString` such that `Pkg.Versions.semver_spec(str) == spec`.
 function semver_spec_string(spec::PKG_VERSIONS.VersionSpec)
     ranges = spec.ranges
     if isempty(ranges)
-        result_string = "1 - 0"
+        result_string = "1 - 0"::String
     else
         specs = _semver_spec_string.(ranges)
-        result_string = join(specs, ", ")
+        result_string = join(specs, ", ")::String
     end
     _check_result(spec, result_string)
     return result_string
