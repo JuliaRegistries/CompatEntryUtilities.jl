@@ -11,4 +11,6 @@ Documentation for [CompatEntryUtilities](https://github.com/JuliaRegistries/Comp
 
 ```@autodocs
 Modules = [CompatEntryUtilities]
+Public = true
+Private = false
 ```
