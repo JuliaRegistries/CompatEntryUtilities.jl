@@ -6,11 +6,11 @@ DocMeta.setdocmeta!(CompatEntryUtilities, :DocTestSetup, :(using CompatEntryUtil
 makedocs(;
     modules=[CompatEntryUtilities],
     authors="Dilum Aluthge and contributors",
-    repo="https://github.com/bcbi/CompatEntryUtilities.jl/blob/{commit}{path}#{line}",
+    repo="https://github.com/JuliaRegistries/CompatEntryUtilities.jl/blob/{commit}{path}#{line}",
     sitename="CompatEntryUtilities.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://bcbi.github.io/CompatEntryUtilities.jl",
+        canonical="https://JuliaRegistries.github.io/CompatEntryUtilities.jl",
         assets=String[],
     ),
     pages=[
@@ -19,6 +19,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/bcbi/CompatEntryUtilities.jl",
+    repo="github.com/JuliaRegistries/CompatEntryUtilities.jl",
     devbranch="main",
 )

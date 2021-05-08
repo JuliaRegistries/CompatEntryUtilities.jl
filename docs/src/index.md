@@ -4,7 +4,7 @@ CurrentModule = CompatEntryUtilities
 
 # CompatEntryUtilities
 
-Documentation for [CompatEntryUtilities](https://github.com/bcbi/CompatEntryUtilities.jl).
+Documentation for [CompatEntryUtilities](https://github.com/JuliaRegistries/CompatEntryUtilities.jl).
 
 ```@index
 ```
