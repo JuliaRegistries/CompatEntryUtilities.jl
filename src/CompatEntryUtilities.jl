@@ -11,7 +11,12 @@ else
 end
 
 function _check_result(spec::PKG_VERSIONS.VersionSpec, str::String)
-    spec_from_str = PKG_VERSIONS.semver_spec(str)
+    spec_from_str = try
+        PKG_VERSIONS.semver_spec(str)
+    catch
+        @error("Encountered an error while checking the result", spec, str)
+        rethrow()
+    end
     result_is_correct = spec == spec_from_str
     if !result_is_correct
         msg = "`Pkg.Versions.semver_spec(str)` is not equal to the original `spec`"
