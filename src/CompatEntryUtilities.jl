@@ -40,7 +40,7 @@ function _semver_spec_string(r::PKG_VERSIONS.VersionRange)::String
     end
 
     if ((m, n) == (3, 1)) && (r.lower.t[1] == r.upper.t[1]) && (r.lower.t[1] ≥ 1)
-        return join(r.lower.t[1:m], ".") # "a.b.c", which is equivalent to "^a.b.c"
+        return join(r.lower.t[1:m], ".") # "a.b.c" (which is equivalent to "^a.b.c"), where a ≥ 1
     end
 
     if (m !=0 ) && (n == 0)
