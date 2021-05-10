@@ -58,7 +58,7 @@ function _semver_spec_string(r::PKG_VERSIONS.VersionRange)::String
 
     if (m !=0 ) && (n != 0)
         # "a.b.c - x.y.z" 
-        return string(_fix_zero(join(r.lower.t[1:m], ".")), " - ", _fix_zero(join(r.upper.t[1:n], ".")))
+        return string(join(r.lower.t[1:m], "."), " - ", join(r.upper.t[1:n], "."))
     end
 
     msg = "This version range cannot be represented using SemVer notation"
