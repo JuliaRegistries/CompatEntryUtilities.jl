@@ -29,8 +29,7 @@ function _is_zero(b::PKG_VERSIONS.VersionBound)
 end
 
 function _semver_spec_string(r::PKG_VERSIONS.VersionRange)::String
-    m = r.lower.n
-    n = r.upper.n
+    m, n = r.lower.n, r.upper.n
 
     if (m, n) == (0, 0)
         return "≥0"
