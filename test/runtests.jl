@@ -30,8 +30,7 @@ end
 @testset "_check_result" begin
     @test CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("1"), "1") isa Nothing
     @test_throws expected_exception_1 CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("2"), "1")
-    # @test_throws expected_exception_2 
-    CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("1 - 0"), "=0.0.0")
+    @test_throws expected_exception_2 CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("1 - 0"), "=0.0.0")
 end
 
 @testset "semver_spec_string" begin
