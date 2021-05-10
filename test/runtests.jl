@@ -10,7 +10,9 @@ else
 end
 
 const expected_exception_1 = ErrorException("`Pkg.Versions.semver_spec(str)` is not equal to the original `spec`")
-const expected_exception_2 = ArgumentError("This version range cannot be represented using SemVer notation")
+const expected_exception_2 = Exception
+const expected_exception_3 = ArgumentError("This version range cannot be represented using SemVer notation")
+
 
 function roundtrip_semver_spec_string(str_1::AbstractString)
     spec_1 = PKG_VERSIONS.semver_spec(str_1)
@@ -27,7 +29,8 @@ end
 
 @testset "_check_result" begin
     @test CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("1"), "1") isa Nothing
-    @test_throws expected_exception_1 CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("2"), "1") isa Nothing
+    @test_throws expected_exception_1 CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("2"), "1")
+    @test_throws expected_exception_2 CompatEntryUtilities._check_result(PKG_VERSIONS.semver_spec("1-0"), "=0.0.0")
 end
 
 @testset "semver_spec_string" begin
@@ -37,7 +40,7 @@ end
             upper = PKG_VERSIONS.VersionBound(1)
             r = PKG_VERSIONS.VersionRange(lower, upper)
             spec = PKG_VERSIONS.VersionSpec([r])
-            @test_throws expected_exception_2 semver_spec_string(spec)
+            @test_throws expected_exception_3 semver_spec_string(spec)
         end
     end
 
