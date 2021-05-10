@@ -26,11 +26,11 @@ function _check_result(spec::PKG_VERSIONS.VersionSpec, str::String)
     return nothing
 end
 
-function _is_zero(b::PKG_VERSIONS.VersionBound)
-    if b == (0, 0, 0)
-        return true
+function _fix_zero(s::String)
+    if s === "0.0.0"
+        return "0"
     end
-    return false
+    return s
 end
 
 function _semver_spec_string(r::PKG_VERSIONS.VersionRange)::String
@@ -40,20 +40,25 @@ function _semver_spec_string(r::PKG_VERSIONS.VersionRange)::String
         return "≥0"
     end
 
-    if ((m, n) == (3, 3)) && (r.lower == r.upper) && (!_is_zero(r.lower))
-        return string("=", join(r.lower.t, ".")) # "=a.b.c"
+    if ((m, n) == (3, 3)) && (r.lower == r.upper)
+        # "=a.b.c"
+        return string("=", _fix_zero(join(r.lower.t, "."))) 
     end
 
     if ((m, n) == (3, 1)) && (r.lower.t[1] == r.upper.t[1]) && (r.lower.t[1] ≥ 1)
-        return join(r.lower.t[1:m], ".") # "a.b.c" (which is equivalent to "^a.b.c"), where a ≥ 1
+        # "^a.b.c", where a ≥ 1
+        #  "a.b.c", where a ≥ 1
+        return _fix_zero(join(r.lower.t[1:m], ".")) 
     end
 
     if (m !=0 ) && (n == 0)
-        return string("≥", join(r.lower.t[1:m], ".")) # "≥a.b.c"
+        # "≥a.b.c"
+        return string("≥", _fix_zero(join(r.lower.t[1:m], ".")))
     end
 
     if (m !=0 ) && (n != 0)
-        return string(join(r.lower.t[1:m], "."), " - ", join(r.upper.t[1:n], ".")) # "a.b.c - x.y.z"
+        # "a.b.c - x.y.z" 
+        return string(_fix_zero(join(r.lower.t[1:m], ".")), " - ", _fix_zero(join(r.upper.t[1:n], ".")))
     end
 
     msg = "This version range cannot be represented using SemVer notation"
